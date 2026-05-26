@@ -25,7 +25,7 @@
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body { font-family: 'DM Sans', sans-serif; background: var(--cream); color: var(--ink); min-height: 100vh; }
- 
+
   header {
     background: var(--navy); padding: 0 2rem;
     position: sticky; top: 0; z-index: 100;
@@ -56,10 +56,10 @@
     color: var(--gold-light); font-size: 0.75rem; font-weight: 500;
     padding: 4px 14px; border-radius: 20px; letter-spacing: 0.05em;
   }
- 
+
   .page { display: none; }
   .page.active { display: block; }
- 
+
   /* COURSES */
   .filters-bar {
     background: var(--white); border-bottom: 1px solid var(--border);
@@ -89,10 +89,10 @@
   select:focus { border-color: var(--blue); }
   .sort-wrap { display: flex; align-items: center; gap: 6px; margin-left: auto; }
   .sort-wrap label { font-size: 0.8rem; color: var(--muted); white-space: nowrap; }
- 
+
   .grid-wrap { max-width: 1400px; margin: 0 auto; padding: 1.25rem 2rem 4rem; }
   .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 1.25rem; }
- 
+
   .card {
     background: var(--white); border-radius: 12px; box-shadow: var(--shadow);
     transition: box-shadow 0.25s, transform 0.25s; overflow: hidden;
@@ -145,7 +145,7 @@
   .empty-icon { font-size: 3rem; margin-bottom: 1rem; }
   .empty h3 { font-family: 'Playfair Display', serif; color: var(--ink); margin-bottom: 0.5rem; }
   .loading { text-align: center; padding: 5rem; color: var(--muted); font-family: 'Playfair Display', serif; font-style: italic; font-size: 1.25rem; }
- 
+
   /* MAP PAGE */
   .map-page { display: flex; flex-direction: column; height: calc(100vh - 64px); }
   .map-controls {
@@ -169,10 +169,10 @@
   }
   .map-btn:hover { background: var(--blue); }
   #mapStatus { font-size: 0.8rem; color: var(--muted); }
- 
+
   .map-body { display: flex; flex: 1; overflow: hidden; }
   #gmap { flex: 1; }
- 
+
   /* SIDEBAR */
   .map-sidebar {
     width: 340px; flex-shrink: 0; overflow-y: auto; background: var(--cream);
@@ -180,7 +180,7 @@
   }
   .map-sidebar::-webkit-scrollbar { width: 4px; }
   .map-sidebar::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
- 
+
   .map-card {
     background: var(--white); border-bottom: 1px solid var(--border);
     padding: 1rem 1.25rem; cursor: pointer;
@@ -202,9 +202,9 @@
   .mcl-book { background: var(--green-pale); color: var(--green); border: 1px solid rgba(45,106,79,0.25); }
   .mcl-book:hover { background: #d4e8da; }
   .mcl-none { background: #f0ede8; color: #b0ac9f; pointer-events: none; }
- 
+
   .map-empty { text-align: center; padding: 3rem 1.5rem; color: var(--muted); font-size: 0.875rem; }
- 
+
   /* Google Maps info window overrides */
   .gm-info { font-family: 'DM Sans', sans-serif; min-width: 220px; }
   .gm-info h3 { font-family: 'Playfair Display', serif; font-size: 1rem; color: var(--navy); margin-bottom: 4px; }
@@ -220,7 +220,7 @@
 </style>
 </head>
 <body>
- 
+
 <header>
   <div class="header-inner">
     <a class="logo" href="#" onclick="showPage('courses');return false;">
@@ -232,7 +232,7 @@
     <div class="badge" id="headerCount">Loading…</div>
   </div>
 </header>
- 
+
 <!-- COURSES PAGE -->
 <div class="page active" id="page-courses">
   <div class="filters-bar">
@@ -275,7 +275,7 @@
   </div>
   <div class="grid-wrap"><div class="grid" id="grid"><div class="loading">Loading courses…</div></div></div>
 </div>
- 
+
 <!-- MAP PAGE -->
 <div class="page" id="page-map">
   <div class="map-page">
@@ -308,19 +308,19 @@
     </div>
   </div>
 </div>
- 
+
 <script>
 const CSV_URL = 'https://raw.githubusercontent.com/jcampion10/ma-golf/refs/heads/main/ma_golf_courses_final.csv';
 const GMAPS_KEY = 'AIzaSyAwCyE4PdO5GVkY9-g4SyeFmgna5KBg3To';
- 
+
 const REGION_CLASS = {
   'Berkshires':'r0','Cape Cod':'r1','Greater Boston':'r2',
   'Greater Springfield':'r3','Greater Worcester':'r4','North Shore':'r5','South Shore':'r6'
 };
- 
+
 // Pin colors by type
 const PIN_COLOR = { public: '#2d6a4f', private: '#0a1d3f', 'semi-private': '#c9a84c' };
- 
+
 function parseCSV(text) {
   const lines = text.trim().split('\n');
   let start = lines[0].includes(',') ? 0 : 1;
@@ -341,15 +341,15 @@ function parseCSV(text) {
     return row;
   }).filter(r => r.name && r.name !== 'name');
 }
- 
+
 function v(x) { return x && x !== 'nan' && x !== '' ? x : null; }
- 
+
 function haversine(lat1,lng1,lat2,lng2) {
   const R=3958.8, dLat=(lat2-lat1)*Math.PI/180, dLng=(lng2-lng1)*Math.PI/180;
   const a=Math.sin(dLat/2)**2+Math.cos(lat1*Math.PI/180)*Math.cos(lat2*Math.PI/180)*Math.sin(dLng/2)**2;
   return R*2*Math.asin(Math.sqrt(a));
 }
- 
+
 // ── PAGE SWITCHING ───────────────────────────────────────────────────────
 function showPage(name) {
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
@@ -360,10 +360,10 @@ function showPage(name) {
     setTimeout(() => google.maps.event.trigger(gmap, 'resize'), 100);
   }
 }
- 
+
 // ── COURSES RENDER ───────────────────────────────────────────────────────
 let all = [], gmap = null, markers = [], infoWindow = null, userLat = null, userLng = null, userMarker = null;
- 
+
 function card(c) {
   const hasWeb=v(c.website_url), hasBook=v(c.booking_url);
   const rc=REGION_CLASS[c.region]||'r2';
@@ -394,7 +394,7 @@ function card(c) {
     </div>
   </div>`;
 }
- 
+
 function render() {
   const search=document.getElementById('search').value.toLowerCase();
   const region=document.getElementById('region').value;
@@ -420,9 +420,10 @@ function render() {
   grid.innerHTML=filtered.length?filtered.map(card).join(''):`<div class="empty"><div class="empty-icon">⛳</div><h3>No courses found</h3><p>Try adjusting your filters</p></div>`;
   document.getElementById('meta').textContent=filtered.length===all.length?`${all.length} courses`:`${filtered.length} of ${all.length} courses`;
 }
- 
+
 // ── GOOGLE MAPS ──────────────────────────────────────────────────────────
 function initMap() {
+  console.log('initMap called, all.length=', all.length);
   gmap = new google.maps.Map(document.getElementById('gmap'), {
     center: { lat: 42.15, lng: -71.6 },
     zoom: 8,
@@ -433,11 +434,23 @@ function initMap() {
     ]
   });
   infoWindow = new google.maps.InfoWindow();
-  if(all.length) applyMapFilters();
-  else window._mapReady = true;
-  if(window._csvReady) applyMapFilters();
+  window._mapReady = true;
+  if(window._csvReady) {
+    console.log('CSV was already ready, plotting now');
+    applyMapFilters();
+  }
 }
- 
+    center: { lat: 42.15, lng: -71.6 },
+    zoom: 8,
+    mapTypeId: 'roadmap',
+    styles: [
+      { featureType:'poi', elementType:'labels', stylers:[{visibility:'off'}] },
+      { featureType:'transit', stylers:[{visibility:'off'}] }
+    ]
+  });
+  infoWindow = new google.maps.InfoWindow();
+
+
 function infoContent(c) {
   const hasWeb=v(c.website_url), hasBook=v(c.booking_url);
   const webBtn = hasWeb
@@ -452,8 +465,9 @@ function infoContent(c) {
     <div class="gm-links">${webBtn}${bookBtn}</div>
   </div>`;
 }
- 
+
 function plotMarkers(courses) {
+  console.log('plotMarkers called with', courses.length, 'courses');
   markers.forEach(m => m.setMap(null));
   markers = [];
   courses.filter(c => c.lat && c.lng).forEach(c => {
@@ -482,7 +496,7 @@ function plotMarkers(courses) {
     markers.push(marker);
   });
 }
- 
+
 function renderSidebar(courses) {
   const sidebar = document.getElementById('mapSidebar');
   if(!courses.length) {
@@ -504,7 +518,7 @@ function renderSidebar(courses) {
     </div>`;
   }).join('');
 }
- 
+
 function focusMarker(lat, lng, name) {
   gmap.panTo({lat, lng});
   gmap.setZoom(13);
@@ -517,7 +531,7 @@ function focusMarker(lat, lng, name) {
   const el = document.getElementById('mc-'+name.replace(/\W/g,'_'));
   if(el) el.classList.add('selected');
 }
- 
+
 function applyMapFilters() {
   const typeFilter  = document.getElementById('mapType').value;
   const holesFilter = document.getElementById('mapHoles').value;
@@ -533,13 +547,13 @@ function applyMapFilters() {
   plotMarkers(courses);
   renderSidebar(courses);
 }
- 
+
 async function geocodeAndSearch() {
   const input = document.getElementById('locationInput').value.trim();
   if(!input) return;
   const status = document.getElementById('mapStatus');
   status.textContent = 'Locating…';
- 
+
   try {
     const geocoder = new google.maps.Geocoder();
     geocoder.geocode({address: input + ', Massachusetts, USA'}, (results, gstatus) => {
@@ -574,13 +588,13 @@ async function geocodeAndSearch() {
     status.textContent = 'Error: ' + e.message;
   }
 }
- 
+
 document.getElementById('locationInput').addEventListener('keydown', e => {
   if(e.key==='Enter') geocodeAndSearch();
 });
 document.getElementById('mapType').addEventListener('change', applyMapFilters);
 document.getElementById('mapHoles').addEventListener('change', applyMapFilters);
- 
+
 // ── INIT ─────────────────────────────────────────────────────────────────
 (async () => {
   try {
@@ -588,12 +602,14 @@ document.getElementById('mapHoles').addEventListener('change', applyMapFilters);
     if(!res.ok) throw new Error(`HTTP ${res.status}`);
     const text = await res.text();
     all = parseCSV(text);
+    console.log('CSV loaded, courses=', all.length, 'with coords=', all.filter(c=>c.lat&&c.lng).length);
     document.getElementById('headerCount').textContent = `${all.length} courses`;
     ['search','region','type','holes','sort'].forEach(id =>
       document.getElementById(id).addEventListener('input', render)
     );
     render();
-    if(gmap) applyMapFilters(); else window._csvReady = true;
+    window._csvReady = true;
+    console.log('CSV ready, mapReady=', window._mapReady);
     if(window._mapReady) applyMapFilters();
   } catch(e) {
     document.getElementById('grid').innerHTML =
@@ -601,13 +617,9 @@ document.getElementById('mapHoles').addEventListener('change', applyMapFilters);
   }
 })();
 </script>
-<script async defer
-  src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAwCyE4PdO5GVkY9-g4SyeFmgna5KBg3To&callback=initMap">
+<script>
+(g=>{var h,a,k,p="The Google Maps JavaScript API",c="google",l="importLibrary",q="__ib__",m=document,b=window;b=b[c]||(b[c]={});var d=b.maps||(b.maps={}),r=new Set,e=new URLSearchParams,u=()=>h||(h=new Promise(async(f,n)=>{await (a=m.createElement("script"));e.set("libraries",[...r]+"");for(k in g)e.set(k.replace(/[A-Z]/g,t=>"_"+t[0].toLowerCase()),g[k]);e.set("language","en");a.src=`https://maps.googleapis.com/maps/api/js?`+e;a.onerror=()=>n(Error(p+" could not load."));a.nonce=m.querySelector("script[nonce]")?.nonce||"";m.head.append(a);d[l]=f;a.onload=async()=>{await h;f()}}));d[l]?console.warn(p+" only loads once. Ignoring:",g):d[l]=(f,...n)=>r.add(f)&&u().then(()=>d[l](f,...n))})
+({key:"AIzaSyAwCyE4PdO5GVkY9-g4SyeFmgna5KBg3To",v:"weekly",callback:"initMap"});
 </script>
 </body>
 </html>
-
-
-
-
-

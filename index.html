@@ -199,7 +199,7 @@ var userMarker = null;
 
 function parseCSV(text) {
   var lines = text.trim().split('\n');
-  var start = (lines[0].indexOf(',') === -1) ? 1 : 0;
+  var start = (lines[0].split(',')[0].trim() !== 'name') ? 1 : 0;
   var headers = lines[start].split(',').map(function(h) { return h.trim().replace(/\r/g, ''); });
   var result = [];
   for (var i = start + 1; i < lines.length; i++) {

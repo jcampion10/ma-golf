@@ -25,8 +25,7 @@
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body { font-family: 'DM Sans', sans-serif; background: var(--cream); color: var(--ink); min-height: 100vh; }
-
-  /* HEADER */
+ 
   header {
     background: var(--navy); padding: 0 2rem;
     position: sticky; top: 0; z-index: 100;
@@ -41,29 +40,27 @@
   .logo img { width: 40px; height: 40px; object-fit: contain; }
   .logo-text { font-family: 'Playfair Display', serif; font-size: 1.2rem; color: var(--cream); }
   .logo-text span { color: var(--gold); }
-
   .nav-tab {
     font-size: 0.875rem; font-weight: 500; color: rgba(240,237,228,0.65);
     text-decoration: none; padding: 0 4px; height: 64px;
-    display: flex; align-items: center; border-bottom: 3px solid transparent;
-    margin-bottom: -3px; transition: color 0.2s, border-color 0.2s; cursor: pointer;
+    display: flex; align-items: center;
+    border-bottom: 3px solid transparent; margin-bottom: -3px;
+    transition: color 0.2s, border-color 0.2s; cursor: pointer;
     background: none; border-top: none; border-left: none; border-right: none;
     font-family: 'DM Sans', sans-serif;
   }
   .nav-tab:hover { color: var(--cream); }
   .nav-tab.active { color: var(--gold); border-bottom-color: var(--gold); }
-
   .badge {
     background: rgba(201,168,76,0.15); border: 1px solid rgba(201,168,76,0.35);
     color: var(--gold-light); font-size: 0.75rem; font-weight: 500;
     padding: 4px 14px; border-radius: 20px; letter-spacing: 0.05em;
   }
-
-  /* PAGES */
+ 
   .page { display: none; }
   .page.active { display: block; }
-
-  /* ── COURSES PAGE ── */
+ 
+  /* COURSES */
   .filters-bar {
     background: var(--white); border-bottom: 1px solid var(--border);
     padding: 0.875rem 2rem; position: sticky; top: 64px; z-index: 90;
@@ -92,11 +89,10 @@
   select:focus { border-color: var(--blue); }
   .sort-wrap { display: flex; align-items: center; gap: 6px; margin-left: auto; }
   .sort-wrap label { font-size: 0.8rem; color: var(--muted); white-space: nowrap; }
-
+ 
   .grid-wrap { max-width: 1400px; margin: 0 auto; padding: 1.25rem 2rem 4rem; }
   .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 1.25rem; }
-
-  /* CARD */
+ 
   .card {
     background: var(--white); border-radius: 12px; box-shadow: var(--shadow);
     transition: box-shadow 0.25s, transform 0.25s; overflow: hidden;
@@ -121,7 +117,6 @@
   .bsp { background: rgba(201,168,76,0.2);  color: var(--gold-light); }
   .card-name { font-family: 'Playfair Display', serif; font-size: 1.05rem; color: var(--cream); line-height: 1.25; margin-bottom: 0.25rem; }
   .card-location { font-size: 0.75rem; color: rgba(240,237,228,0.5); font-weight: 300; }
-
   .card-body { padding: 1rem 1.25rem; flex: 1; display: flex; flex-direction: column; gap: 0.75rem; }
   .card-stats { display: flex; gap: 0.5rem; }
   .stat { flex: 1; background: #f0f4f8; border-radius: 8px; padding: 0.5rem 0.625rem; text-align: center; border: 1px solid rgba(26,47,94,0.08); }
@@ -134,7 +129,6 @@
   .card-address { font-size: 0.75rem; color: var(--muted); }
   .card-architect { font-size: 0.75rem; color: var(--muted); font-style: italic; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   .card-description { font-size: 0.78rem; color: var(--muted); line-height: 1.5; }
-
   .card-footer { padding: 0.75rem 1.25rem; border-top: 1px solid #eef0f4; display: flex; gap: 0.5rem; }
   .btn {
     flex: 1; padding: 7px 10px; border-radius: 7px;
@@ -147,75 +141,86 @@
   .btn-s { background: var(--green-pale); color: var(--green); border: 1px solid rgba(45,106,79,0.25); }
   .btn-s:hover { background: #d4e8da; }
   .btn-d { background: #f0ede8; color: #b0ac9f; pointer-events: none; }
-
   .empty { grid-column: 1/-1; text-align: center; padding: 5rem 2rem; color: var(--muted); }
   .empty-icon { font-size: 3rem; margin-bottom: 1rem; }
   .empty h3 { font-family: 'Playfair Display', serif; color: var(--ink); margin-bottom: 0.5rem; }
   .loading { text-align: center; padding: 5rem; color: var(--muted); font-family: 'Playfair Display', serif; font-style: italic; font-size: 1.25rem; }
-
-  /* ── MAP PAGE ── */
-  .map-page { padding: 2rem; max-width: 1400px; margin: 0 auto; }
+ 
+  /* MAP PAGE */
+  .map-page { display: flex; flex-direction: column; height: calc(100vh - 64px); }
   .map-controls {
-    background: var(--white); border-radius: 12px; padding: 1.25rem 1.5rem;
-    box-shadow: var(--shadow); margin-bottom: 1.5rem;
-    display: flex; gap: 1rem; align-items: flex-end; flex-wrap: wrap;
-    border: 1px solid var(--border);
+    background: var(--white); border-bottom: 1px solid var(--border);
+    padding: 0.75rem 1.5rem; display: flex; gap: 1rem; align-items: center; flex-wrap: wrap;
+    flex-shrink: 0;
   }
-  .map-controls label { font-size: 0.8rem; color: var(--muted); display: block; margin-bottom: 4px; }
   .map-input-wrap { position: relative; }
   .map-input-wrap svg { position: absolute; left: 10px; top: 50%; transform: translateY(-50%); color: var(--muted); pointer-events: none; }
   .map-input-wrap input {
-    padding: 9px 12px 9px 34px; border: 1px solid var(--border); border-radius: 8px;
+    padding: 8px 12px 8px 34px; border: 1px solid var(--border); border-radius: 8px;
     font-family: 'DM Sans', sans-serif; font-size: 0.875rem;
-    background: #f8f7f4; color: var(--ink); outline: none; width: 260px;
+    background: #f8f7f4; color: var(--ink); outline: none; width: 240px;
+    transition: border-color 0.2s;
   }
   .map-input-wrap input:focus { border-color: var(--blue); }
   .map-btn {
-    padding: 9px 20px; background: var(--navy); color: var(--cream);
+    padding: 8px 18px; background: var(--navy); color: var(--cream);
     border: none; border-radius: 8px; font-family: 'DM Sans', sans-serif;
     font-size: 0.875rem; font-weight: 500; cursor: pointer; transition: background 0.2s;
   }
   .map-btn:hover { background: var(--blue); }
-  .map-filter-wrap select { padding: 9px 30px 9px 12px; }
-
-  .map-layout { display: grid; grid-template-columns: 340px 1fr; gap: 1.5rem; }
-  @media (max-width: 900px) { .map-layout { grid-template-columns: 1fr; } }
-
-  #mapContainer {
-    border-radius: 12px; overflow: hidden; box-shadow: var(--shadow);
-    border: 1px solid var(--border); height: 600px; background: #e8edf2;
-    position: relative;
+  #mapStatus { font-size: 0.8rem; color: var(--muted); }
+ 
+  .map-body { display: flex; flex: 1; overflow: hidden; }
+  #gmap { flex: 1; }
+ 
+  /* SIDEBAR */
+  .map-sidebar {
+    width: 340px; flex-shrink: 0; overflow-y: auto; background: var(--cream);
+    border-left: 1px solid var(--border);
   }
-  #mapSvg { width: 100%; height: 100%; }
-
-  .map-list { display: flex; flex-direction: column; gap: 0.625rem; max-height: 600px; overflow-y: auto; }
-  .map-list::-webkit-scrollbar { width: 4px; }
-  .map-list::-webkit-scrollbar-track { background: transparent; }
-  .map-list::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
-
+  .map-sidebar::-webkit-scrollbar { width: 4px; }
+  .map-sidebar::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+ 
   .map-card {
-    background: var(--white); border-radius: 10px; padding: 0.875rem 1rem;
-    box-shadow: var(--shadow); border: 1px solid var(--border);
-    transition: border-color 0.2s, box-shadow 0.2s; cursor: pointer;
+    background: var(--white); border-bottom: 1px solid var(--border);
+    padding: 1rem 1.25rem; cursor: pointer;
+    transition: background 0.15s; border-left: 3px solid transparent;
   }
-  .map-card:hover, .map-card.selected { border-color: var(--gold); box-shadow: 0 4px 16px rgba(26,47,94,0.15); }
-  .map-card-name { font-family: 'Playfair Display', serif; font-size: 0.95rem; color: var(--navy); font-weight: 700; margin-bottom: 2px; }
-  .map-card-meta { font-size: 0.75rem; color: var(--muted); display: flex; gap: 0.75rem; flex-wrap: wrap; }
-  .map-card-dist { font-size: 0.8rem; font-weight: 600; color: var(--cranberry); margin-top: 4px; }
-  .map-empty { text-align: center; padding: 3rem; color: var(--muted); }
-
-  /* Tooltip */
-  .map-tooltip {
-    position: absolute; background: var(--navy); color: var(--cream);
-    padding: 6px 10px; border-radius: 6px; font-size: 0.75rem;
-    pointer-events: none; z-index: 10; white-space: nowrap;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.3);
-    border: 1px solid var(--gold); opacity: 0; transition: opacity 0.15s;
+  .map-card:hover { background: #f8f7f4; }
+  .map-card.selected { border-left-color: var(--gold); background: #fdfaf4; }
+  .map-card-name { font-family: 'Playfair Display', serif; font-size: 0.95rem; color: var(--navy); font-weight: 700; margin-bottom: 3px; }
+  .map-card-meta { font-size: 0.75rem; color: var(--muted); margin-bottom: 4px; }
+  .map-card-dist { font-size: 0.8rem; font-weight: 600; color: var(--cranberry); margin-bottom: 8px; }
+  .map-card-links { display: flex; gap: 6px; }
+  .map-card-links a {
+    flex: 1; padding: 5px 8px; border-radius: 6px;
+    font-size: 0.72rem; font-weight: 500; text-decoration: none;
+    text-align: center; transition: all 0.15s;
   }
+  .mcl-web  { background: var(--navy); color: var(--cream); }
+  .mcl-web:hover  { background: var(--blue); }
+  .mcl-book { background: var(--green-pale); color: var(--green); border: 1px solid rgba(45,106,79,0.25); }
+  .mcl-book:hover { background: #d4e8da; }
+  .mcl-none { background: #f0ede8; color: #b0ac9f; pointer-events: none; }
+ 
+  .map-empty { text-align: center; padding: 3rem 1.5rem; color: var(--muted); font-size: 0.875rem; }
+ 
+  /* Google Maps info window overrides */
+  .gm-info { font-family: 'DM Sans', sans-serif; min-width: 220px; }
+  .gm-info h3 { font-family: 'Playfair Display', serif; font-size: 1rem; color: var(--navy); margin-bottom: 4px; }
+  .gm-info .gm-meta { font-size: 0.75rem; color: var(--muted); margin-bottom: 8px; }
+  .gm-info .gm-links { display: flex; gap: 6px; }
+  .gm-info .gm-links a {
+    flex: 1; padding: 6px 8px; border-radius: 6px; text-decoration: none;
+    font-size: 0.75rem; font-weight: 500; text-align: center;
+  }
+  .gm-info .gml-web  { background: #1a2f5e; color: #f0ede4; }
+  .gm-info .gml-book { background: #e8f2ec; color: #2d6a4f; border: 1px solid rgba(45,106,79,0.3); }
+  .gm-info .gml-none { background: #f0ede8; color: #b0ac9f; cursor: default; }
 </style>
 </head>
 <body>
-
+ 
 <header>
   <div class="header-inner">
     <a class="logo" href="#" onclick="showPage('courses');return false;">
@@ -227,7 +232,7 @@
     <div class="badge" id="headerCount">Loading…</div>
   </div>
 </header>
-
+ 
 <!-- COURSES PAGE -->
 <div class="page active" id="page-courses">
   <div class="filters-bar">
@@ -270,66 +275,52 @@
   </div>
   <div class="grid-wrap"><div class="grid" id="grid"><div class="loading">Loading courses…</div></div></div>
 </div>
-
+ 
 <!-- MAP PAGE -->
 <div class="page" id="page-map">
   <div class="map-page">
     <div class="map-controls">
-      <div>
-        <label>Your location (city or ZIP)</label>
-        <div class="map-input-wrap">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
-          <input type="text" id="locationInput" placeholder="e.g. Boston or 02101" value="">
-        </div>
+      <div class="map-input-wrap">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+        <input type="text" id="locationInput" placeholder="City or ZIP code…">
       </div>
-      <div class="map-filter-wrap">
-        <label>Course type</label>
-        <select id="mapType">
-          <option value="">All Types</option>
-          <option value="public">Public</option>
-          <option value="private">Private</option>
-          <option value="semi-private">Semi-Private</option>
-        </select>
-      </div>
-      <div class="map-filter-wrap">
-        <label>Holes</label>
-        <select id="mapHoles">
-          <option value="">Any</option>
-          <option value="9">9</option>
-          <option value="18">18</option>
-          <option value="27">27</option>
-          <option value="36">36</option>
-        </select>
-      </div>
+      <select id="mapType">
+        <option value="">All Types</option>
+        <option value="public">Public</option>
+        <option value="private">Private</option>
+        <option value="semi-private">Semi-Private</option>
+      </select>
+      <select id="mapHoles">
+        <option value="">Any Holes</option>
+        <option value="9">9</option>
+        <option value="18">18</option>
+        <option value="27">27</option>
+        <option value="36">36</option>
+      </select>
       <button class="map-btn" onclick="geocodeAndSearch()">Find Courses</button>
-      <div id="mapStatus" style="font-size:0.8rem;color:var(--muted);align-self:center;"></div>
+      <div id="mapStatus"></div>
     </div>
-    <div class="map-layout">
-      <div class="map-list" id="mapList"><div class="map-empty">Enter a location to find nearby courses</div></div>
-      <div id="mapContainer">
-        <svg id="mapSvg" viewBox="0 0 800 600"></svg>
-        <div class="map-tooltip" id="mapTooltip"></div>
+    <div class="map-body">
+      <div id="gmap"></div>
+      <div class="map-sidebar" id="mapSidebar">
+        <div class="map-empty">Enter a location to sort courses by distance</div>
       </div>
     </div>
   </div>
 </div>
-
+ 
 <script>
 const CSV_URL = 'https://raw.githubusercontent.com/jcampion10/ma-golf/refs/heads/main/ma_golf_courses_final.csv';
+const GMAPS_KEY = 'AIzaSyAwCyE4PdO5GVkY9-g4SyeFmgna5KBg3To';
+ 
 const REGION_CLASS = {
   'Berkshires':'r0','Cape Cod':'r1','Greater Boston':'r2',
   'Greater Springfield':'r3','Greater Worcester':'r4','North Shore':'r5','South Shore':'r6'
 };
-
-// ── PAGE SWITCHING ───────────────────────────────────────────────────────
-function showPage(name) {
-  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-  document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
-  document.getElementById('page-' + name).classList.add('active');
-  document.getElementById('tab-' + name).classList.add('active');
-}
-
-// ── CSV PARSER ───────────────────────────────────────────────────────────
+ 
+// Pin colors by type
+const PIN_COLOR = { public: '#2d6a4f', private: '#0a1d3f', 'semi-private': '#c9a84c' };
+ 
 function parseCSV(text) {
   const lines = text.trim().split('\n');
   let start = lines[0].includes(',') ? 0 : 1;
@@ -350,23 +341,40 @@ function parseCSV(text) {
     return row;
   }).filter(r => r.name && r.name !== 'name');
 }
-
+ 
 function v(x) { return x && x !== 'nan' && x !== '' ? x : null; }
-
-// ── COURSE CARD ──────────────────────────────────────────────────────────
+ 
+function haversine(lat1,lng1,lat2,lng2) {
+  const R=3958.8, dLat=(lat2-lat1)*Math.PI/180, dLng=(lng2-lng1)*Math.PI/180;
+  const a=Math.sin(dLat/2)**2+Math.cos(lat1*Math.PI/180)*Math.cos(lat2*Math.PI/180)*Math.sin(dLng/2)**2;
+  return R*2*Math.asin(Math.sqrt(a));
+}
+ 
+// ── PAGE SWITCHING ───────────────────────────────────────────────────────
+function showPage(name) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+  document.getElementById('page-'+name).classList.add('active');
+  document.getElementById('tab-'+name).classList.add('active');
+  if (name === 'map' && gmap) {
+    setTimeout(() => google.maps.event.trigger(gmap, 'resize'), 100);
+  }
+}
+ 
+// ── COURSES RENDER ───────────────────────────────────────────────────────
+let all = [], gmap = null, markers = [], infoWindow = null, userLat = null, userLng = null, userMarker = null;
+ 
 function card(c) {
-  const hasWeb  = v(c.website_url);
-  const hasBook = v(c.booking_url);
-  const rc = REGION_CLASS[c.region] || 'r2';
-  const bt = c.club_type === 'public' ? 'bp' : c.club_type === 'private' ? 'bpr' : 'bsp';
-  const hc = c.club_type === 'public' ? 'h-public' : c.club_type === 'private' ? 'h-private' : 'h-semi';
-  const stats = [];
-  if (c.holes)            stats.push(`<div class="stat"><div class="stat-val">${c.holes}</div><div class="stat-label">Holes</div></div>`);
-  if (v(c.par))           stats.push(`<div class="stat"><div class="stat-val">${c.par}</div><div class="stat-label">Par</div></div>`);
-  if (v(c.course_rating)) stats.push(`<div class="stat"><div class="stat-val">${c.course_rating}</div><div class="stat-label">Rating</div></div>`);
-  if (v(c.slope_rating))  stats.push(`<div class="stat"><div class="stat-val">${c.slope_rating}</div><div class="stat-label">Slope</div></div>`);
-  const addr = [c.address, c.city, c.state].filter(v).join(', ');
-
+  const hasWeb=v(c.website_url), hasBook=v(c.booking_url);
+  const rc=REGION_CLASS[c.region]||'r2';
+  const bt=c.club_type==='public'?'bp':c.club_type==='private'?'bpr':'bsp';
+  const hc=c.club_type==='public'?'h-public':c.club_type==='private'?'h-private':'h-semi';
+  const stats=[];
+  if(c.holes) stats.push(`<div class="stat"><div class="stat-val">${c.holes}</div><div class="stat-label">Holes</div></div>`);
+  if(v(c.par)) stats.push(`<div class="stat"><div class="stat-val">${c.par}</div><div class="stat-label">Par</div></div>`);
+  if(v(c.course_rating)) stats.push(`<div class="stat"><div class="stat-val">${c.course_rating}</div><div class="stat-label">Rating</div></div>`);
+  if(v(c.slope_rating)) stats.push(`<div class="stat"><div class="stat-val">${c.slope_rating}</div><div class="stat-label">Slope</div></div>`);
+  const addr=[c.address,c.city,c.state].filter(v).join(', ');
   return `<div class="card">
     <div class="card-header ${hc}">
       <div class="card-type-badge ${bt}">${c.club_type}</div>
@@ -374,208 +382,208 @@ function card(c) {
       <div class="card-location">${c.city}, ${c.state}</div>
     </div>
     <div class="card-body">
-      ${stats.length ? `<div class="card-stats">${stats.join('')}</div>` : ''}
+      ${stats.length?`<div class="card-stats">${stats.join('')}</div>`:''}
       <div class="card-region"><div class="rdot ${rc}"></div>${c.region}</div>
-      ${addr ? `<div class="card-address">📍 ${addr}</div>` : ''}
-      ${v(c.architect) ? `<div class="card-architect">Designed by ${c.architect}</div>` : ''}
-      ${v(c.description) ? `<div class="card-description">${c.description}</div>` : ''}
+      ${addr?`<div class="card-address">📍 ${addr}</div>`:''}
+      ${v(c.architect)?`<div class="card-architect">Designed by ${c.architect}</div>`:''}
+      ${v(c.description)?`<div class="card-description">${c.description}</div>`:''}
     </div>
     <div class="card-footer">
-      ${hasWeb  ? `<a href="${c.website_url}" target="_blank" rel="noopener" class="btn btn-p">Website</a>`
-                : `<span class="btn btn-d">No Website</span>`}
-      ${hasBook ? `<a href="${c.booking_url}" target="_blank" rel="noopener" class="btn btn-s">Book Tee Time</a>`
-                : `<span class="btn btn-d">No Booking</span>`}
+      ${hasWeb?`<a href="${c.website_url}" target="_blank" rel="noopener" class="btn btn-p">Website</a>`:`<span class="btn btn-d">No Website</span>`}
+      ${hasBook?`<a href="${c.booking_url}" target="_blank" rel="noopener" class="btn btn-s">Book Tee Time</a>`:`<span class="btn btn-d">No Booking</span>`}
     </div>
   </div>`;
 }
-
-// ── COURSES FILTER/RENDER ────────────────────────────────────────────────
-let all = [];
-
+ 
 function render() {
-  const search = document.getElementById('search').value.toLowerCase();
-  const region = document.getElementById('region').value;
-  const type   = document.getElementById('type').value;
-  const holes  = document.getElementById('holes').value;
-  const sort   = document.getElementById('sort').value;
-
-  let filtered = all.filter(c => {
-    if (search && !c.name.toLowerCase().includes(search) &&
-        !c.city.toLowerCase().includes(search) &&
-        !(c.architect||'').toLowerCase().includes(search) &&
-        !(c.address||'').toLowerCase().includes(search)) return false;
-    if (region && c.region !== region) return false;
-    if (type   && c.club_type !== type) return false;
-    if (holes  && String(c.holes) !== holes) return false;
+  const search=document.getElementById('search').value.toLowerCase();
+  const region=document.getElementById('region').value;
+  const type=document.getElementById('type').value;
+  const holes=document.getElementById('holes').value;
+  const sort=document.getElementById('sort').value;
+  let filtered=all.filter(c=>{
+    if(search&&!c.name.toLowerCase().includes(search)&&!c.city.toLowerCase().includes(search)&&!(c.architect||'').toLowerCase().includes(search)) return false;
+    if(region&&c.region!==region) return false;
+    if(type&&c.club_type!==type) return false;
+    if(holes&&String(c.holes)!==holes) return false;
     return true;
   });
-
-  filtered.sort((a,b) => {
-    if (sort==='name')       return a.name.localeCompare(b.name);
-    if (sort==='name-desc')  return b.name.localeCompare(a.name);
-    if (sort==='holes-desc') return b.holes - a.holes;
-    if (sort==='holes-asc')  return a.holes - b.holes;
-    if (sort==='region')     return a.region.localeCompare(b.region) || a.name.localeCompare(b.name);
+  filtered.sort((a,b)=>{
+    if(sort==='name') return a.name.localeCompare(b.name);
+    if(sort==='name-desc') return b.name.localeCompare(a.name);
+    if(sort==='holes-desc') return b.holes-a.holes;
+    if(sort==='holes-asc') return a.holes-b.holes;
+    if(sort==='region') return a.region.localeCompare(b.region)||a.name.localeCompare(b.name);
     return 0;
   });
-
-  const grid = document.getElementById('grid');
-  grid.innerHTML = filtered.length
-    ? filtered.map(card).join('')
-    : `<div class="empty"><div class="empty-icon">⛳</div><h3>No courses found</h3><p>Try adjusting your filters</p></div>`;
-
-  document.getElementById('meta').textContent = filtered.length === all.length
-    ? `${all.length} courses`
-    : `${filtered.length} of ${all.length} courses`;
+  const grid=document.getElementById('grid');
+  grid.innerHTML=filtered.length?filtered.map(card).join(''):`<div class="empty"><div class="empty-icon">⛳</div><h3>No courses found</h3><p>Try adjusting your filters</p></div>`;
+  document.getElementById('meta').textContent=filtered.length===all.length?`${all.length} courses`:`${filtered.length} of ${all.length} courses`;
 }
-
-// ── MAP ──────────────────────────────────────────────────────────────────
-const MA_BOUNDS = { minLat:41.2, maxLat:42.9, minLng:-73.5, maxLng:-69.9 };
-
-function toSvg(lat, lng, W, H) {
-  const x = (lng - MA_BOUNDS.minLng) / (MA_BOUNDS.maxLng - MA_BOUNDS.minLng) * W;
-  const y = H - (lat - MA_BOUNDS.minLat) / (MA_BOUNDS.maxLat - MA_BOUNDS.minLat) * H;
-  return [x, y];
-}
-
-function haversine(lat1, lng1, lat2, lng2) {
-  const R = 3958.8;
-  const dLat = (lat2-lat1)*Math.PI/180;
-  const dLng = (lng2-lng1)*Math.PI/180;
-  const a = Math.sin(dLat/2)**2 + Math.cos(lat1*Math.PI/180)*Math.cos(lat2*Math.PI/180)*Math.sin(dLng/2)**2;
-  return R * 2 * Math.asin(Math.sqrt(a));
-}
-
-let userLat = null, userLng = null;
-
-async function geocodeAndSearch() {
-  const input = document.getElementById('locationInput').value.trim();
-  if (!input) return;
-  document.getElementById('mapStatus').textContent = 'Locating…';
-
-  try {
-    const url = `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(input+', Massachusetts')}&format=json&limit=1`;
-    const res = await fetch(url, {headers:{'Accept-Language':'en'}});
-    const data = await res.json();
-    if (!data.length) throw new Error('Location not found');
-    userLat = parseFloat(data[0].lat);
-    userLng = parseFloat(data[0].lon);
-    document.getElementById('mapStatus').textContent = `Showing distances from ${data[0].display_name.split(',')[0]}`;
-    renderMap();
-  } catch(e) {
-    document.getElementById('mapStatus').textContent = 'Could not find location. Try a ZIP code.';
-  }
-}
-
-document.getElementById('locationInput').addEventListener('keydown', e => {
-  if (e.key === 'Enter') geocodeAndSearch();
-});
-
-function renderMap() {
-  const typeFilter  = document.getElementById('mapType').value;
-  const holesFilter = document.getElementById('mapHoles').value;
-  const W = 800, H = 600;
-  const svg = document.getElementById('mapSvg');
-  const tooltip = document.getElementById('mapTooltip');
-  const container = document.getElementById('mapContainer');
-
-  let courses = all.filter(c => c.lat && c.lng);
-  if (typeFilter)  courses = courses.filter(c => c.club_type === typeFilter);
-  if (holesFilter) courses = courses.filter(c => String(c.holes) === holesFilter);
-
-  // Compute distances if we have user location
-  if (userLat !== null) {
-    courses.forEach(c => c._dist = haversine(userLat, userLng, c.lat, c.lng));
-    courses.sort((a,b) => a._dist - b._dist);
-  }
-
-  // Color by type
-  const pinColor = c => c.club_type === 'public' ? '#2d6a4f' : c.club_type === 'private' ? '#0a1d3f' : '#c9a84c';
-
-  // Build SVG
-  let dots = '';
-  courses.forEach((c, i) => {
-    const [x,y] = toSvg(c.lat, c.lng, W, H);
-    dots += `<circle class="map-dot" data-i="${i}" cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="5"
-      fill="${pinColor(c)}" stroke="white" stroke-width="1.5" opacity="0.85"
-      style="cursor:pointer;transition:r 0.1s,opacity 0.1s"/>`;
+ 
+// ── GOOGLE MAPS ──────────────────────────────────────────────────────────
+function initMap() {
+  gmap = new google.maps.Map(document.getElementById('gmap'), {
+    center: { lat: 42.15, lng: -71.6 },
+    zoom: 8,
+    mapTypeId: 'roadmap',
+    styles: [
+      { featureType:'poi', elementType:'labels', stylers:[{visibility:'off'}] },
+      { featureType:'transit', stylers:[{visibility:'off'}] }
+    ]
   });
-
-  // User location pin
-  let userPin = '';
-  if (userLat !== null) {
-    const [ux,uy] = toSvg(userLat, userLng, W, H);
-    userPin = `<circle cx="${ux.toFixed(1)}" cy="${uy.toFixed(1)}" r="8" fill="#8b1a2e" stroke="white" stroke-width="2"/>
-               <circle cx="${ux.toFixed(1)}" cy="${uy.toFixed(1)}" r="14" fill="none" stroke="#8b1a2e" stroke-width="1.5" opacity="0.4"/>`;
-  }
-
-  svg.innerHTML = `
-    <rect width="800" height="600" fill="#e8edf5"/>
-    <text x="400" y="590" text-anchor="middle" font-size="10" fill="#aab" font-family="sans-serif">Massachusetts</text>
-    ${dots}
-    ${userPin}`;
-
-  // Tooltip interactions
-  svg.querySelectorAll('.map-dot').forEach(dot => {
-    const i = parseInt(dot.dataset.i);
-    const c = courses[i];
-    dot.addEventListener('mouseenter', e => {
-      dot.setAttribute('r','8'); dot.setAttribute('opacity','1');
-      const dist = c._dist ? ` · ${c._dist.toFixed(1)} mi` : '';
-      tooltip.textContent = `${c.name} — ${c.city}${dist}`;
-      tooltip.style.opacity = '1';
+  infoWindow = new google.maps.InfoWindow();
+  if(all.length) plotMarkers(all);
+}
+ 
+function infoContent(c) {
+  const hasWeb=v(c.website_url), hasBook=v(c.booking_url);
+  const webBtn = hasWeb
+    ? `<a href="${c.website_url}" target="_blank" class="gml-web">Website</a>`
+    : `<span class="gml-none">No Website</span>`;
+  const bookBtn = hasBook
+    ? `<a href="${c.booking_url}" target="_blank" class="gml-book">Book Tee Time</a>`
+    : `<span class="gml-none">No Booking</span>`;
+  return `<div class="gm-info">
+    <h3>${c.name}</h3>
+    <div class="gm-meta">${c.city}, ${c.state} &nbsp;·&nbsp; ${c.holes} holes &nbsp;·&nbsp; ${c.club_type}</div>
+    <div class="gm-links">${webBtn}${bookBtn}</div>
+  </div>`;
+}
+ 
+function plotMarkers(courses) {
+  markers.forEach(m => m.setMap(null));
+  markers = [];
+  courses.filter(c => c.lat && c.lng).forEach(c => {
+    const color = PIN_COLOR[c.club_type] || '#1a2f5e';
+    const marker = new google.maps.Marker({
+      position: { lat: c.lat, lng: c.lng },
+      map: gmap,
+      title: c.name,
+      icon: {
+        path: google.maps.SymbolPath.CIRCLE,
+        fillColor: color,
+        fillOpacity: 0.9,
+        strokeColor: '#ffffff',
+        strokeWeight: 1.5,
+        scale: 7
+      }
     });
-    dot.addEventListener('mousemove', e => {
-      const rect = container.getBoundingClientRect();
-      tooltip.style.left = (e.clientX - rect.left + 12) + 'px';
-      tooltip.style.top  = (e.clientY - rect.top  - 30) + 'px';
+    marker.addListener('click', () => {
+      infoWindow.setContent(infoContent(c));
+      infoWindow.open(gmap, marker);
+      // Highlight sidebar card
+      document.querySelectorAll('.map-card').forEach(el => el.classList.remove('selected'));
+      const el = document.getElementById('mc-' + c.name.replace(/\W/g,'_'));
+      if(el) { el.classList.add('selected'); el.scrollIntoView({behavior:'smooth',block:'nearest'}); }
     });
-    dot.addEventListener('mouseleave', () => {
-      dot.setAttribute('r','5'); dot.setAttribute('opacity','0.85');
-      tooltip.style.opacity = '0';
-    });
-    dot.addEventListener('click', () => {
-      document.querySelectorAll('.map-card').forEach(mc => mc.classList.remove('selected'));
-      const mc = document.getElementById('mc-' + i);
-      if (mc) { mc.classList.add('selected'); mc.scrollIntoView({behavior:'smooth',block:'nearest'}); }
-    });
+    markers.push(marker);
   });
-
-  // Sidebar list
-  const list = document.getElementById('mapList');
-  if (!courses.length) {
-    list.innerHTML = '<div class="map-empty">No courses match your filters</div>';
+}
+ 
+function renderSidebar(courses) {
+  const sidebar = document.getElementById('mapSidebar');
+  if(!courses.length) {
+    sidebar.innerHTML = '<div class="map-empty">No courses match your filters</div>';
     return;
   }
-  list.innerHTML = courses.map((c,i) => {
+  sidebar.innerHTML = courses.map(c => {
+    const hasWeb=v(c.website_url), hasBook=v(c.booking_url);
     const dist = c._dist ? `<div class="map-card-dist">${c._dist.toFixed(1)} miles away</div>` : '';
-    return `<div class="map-card" id="mc-${i}" onclick="highlightDot(${i})">
+    const id = 'mc-'+c.name.replace(/\W/g,'_');
+    return `<div class="map-card" id="${id}" onclick="focusMarker(${c.lat},${c.lng},'${c.name.replace(/'/g,"\'")}')">
       <div class="map-card-name">${c.name}</div>
-      <div class="map-card-meta">
-        <span>${c.city}, ${c.state}</span>
-        <span>${c.holes} holes</span>
-        <span>${c.club_type}</span>
-      </div>
+      <div class="map-card-meta">${c.city}, ${c.state} · ${c.holes} holes · ${c.club_type}</div>
       ${dist}
+      <div class="map-card-links">
+        ${hasWeb?`<a href="${c.website_url}" target="_blank" class="mcl-web" onclick="event.stopPropagation()">Website</a>`:`<span class="mcl-none">No Website</span>`}
+        ${hasBook?`<a href="${c.booking_url}" target="_blank" class="mcl-book" onclick="event.stopPropagation()">Book Tee Time</a>`:`<span class="mcl-none">No Booking</span>`}
+      </div>
     </div>`;
   }).join('');
 }
-
-function highlightDot(i) {
-  document.querySelectorAll('.map-dot').forEach(d => {
-    d.setAttribute('r', d.dataset.i == i ? '9' : '5');
-    d.setAttribute('opacity', d.dataset.i == i ? '1' : '0.85');
-  });
+ 
+function focusMarker(lat, lng, name) {
+  gmap.panTo({lat, lng});
+  gmap.setZoom(13);
+  const marker = markers.find(m => m.getTitle() === name);
+  if(marker) {
+    const c = all.find(c => c.name === name);
+    if(c) { infoWindow.setContent(infoContent(c)); infoWindow.open(gmap, marker); }
+  }
+  document.querySelectorAll('.map-card').forEach(el => el.classList.remove('selected'));
+  const el = document.getElementById('mc-'+name.replace(/\W/g,'_'));
+  if(el) el.classList.add('selected');
 }
-
-document.getElementById('mapType').addEventListener('change', () => { if (all.length) renderMap(); });
-document.getElementById('mapHoles').addEventListener('change', () => { if (all.length) renderMap(); });
-
+ 
+function applyMapFilters() {
+  const typeFilter  = document.getElementById('mapType').value;
+  const holesFilter = document.getElementById('mapHoles').value;
+  let courses = all.filter(c => c.lat && c.lng);
+  if(typeFilter)  courses = courses.filter(c => c.club_type === typeFilter);
+  if(holesFilter) courses = courses.filter(c => String(c.holes) === holesFilter);
+  if(userLat !== null) {
+    courses.forEach(c => c._dist = haversine(userLat, userLng, c.lat, c.lng));
+    courses.sort((a,b) => a._dist - b._dist);
+  } else {
+    courses.sort((a,b) => a.name.localeCompare(b.name));
+  }
+  plotMarkers(courses);
+  renderSidebar(courses);
+}
+ 
+async function geocodeAndSearch() {
+  const input = document.getElementById('locationInput').value.trim();
+  if(!input) return;
+  const status = document.getElementById('mapStatus');
+  status.textContent = 'Locating…';
+ 
+  try {
+    const geocoder = new google.maps.Geocoder();
+    geocoder.geocode({address: input + ', Massachusetts, USA'}, (results, gstatus) => {
+      if(gstatus === 'OK') {
+        userLat = results[0].geometry.location.lat();
+        userLng = results[0].geometry.location.lng();
+        const name = results[0].address_components[0].long_name;
+        status.textContent = `Sorted by distance from ${name}`;
+        if(userMarker) userMarker.setMap(null);
+        userMarker = new google.maps.Marker({
+          position: {lat: userLat, lng: userLng},
+          map: gmap,
+          title: 'Your location',
+          icon: {
+            path: google.maps.SymbolPath.CIRCLE,
+            fillColor: '#8b1a2e',
+            fillOpacity: 1,
+            strokeColor: '#ffffff',
+            strokeWeight: 2,
+            scale: 10
+          },
+          zIndex: 999
+        });
+        gmap.panTo({lat: userLat, lng: userLng});
+        gmap.setZoom(10);
+        applyMapFilters();
+      } else {
+        status.textContent = 'Location not found — try a ZIP code';
+      }
+    });
+  } catch(e) {
+    status.textContent = 'Error: ' + e.message;
+  }
+}
+ 
+document.getElementById('locationInput').addEventListener('keydown', e => {
+  if(e.key==='Enter') geocodeAndSearch();
+});
+document.getElementById('mapType').addEventListener('change', applyMapFilters);
+document.getElementById('mapHoles').addEventListener('change', applyMapFilters);
+ 
 // ── INIT ─────────────────────────────────────────────────────────────────
 (async () => {
   try {
     const res = await fetch(CSV_URL);
-    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    if(!res.ok) throw new Error(`HTTP ${res.status}`);
     const text = await res.text();
     all = parseCSV(text);
     document.getElementById('headerCount').textContent = `${all.length} courses`;
@@ -583,13 +591,15 @@ document.getElementById('mapHoles').addEventListener('change', () => { if (all.l
       document.getElementById(id).addEventListener('input', render)
     );
     render();
-    renderMap();
+    if(gmap) plotMarkers(all);
   } catch(e) {
     document.getElementById('grid').innerHTML =
       `<div class="empty"><div class="empty-icon">⛳</div><h3>Could not load courses</h3><p>${e.message}</p></div>`;
-    document.getElementById('headerCount').textContent = 'Error';
   }
 })();
+</script>
+<script async defer
+  src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAwCyE4PdO5GVkY9-g4SyeFmgna5KBg3To&callback=initMap">
 </script>
 </body>
 </html>

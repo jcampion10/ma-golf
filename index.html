@@ -392,7 +392,7 @@ function render() {
   document.getElementById('meta').textContent = filtered.length === all.length ? all.length + ' courses' : filtered.length + ' of ' + all.length + ' courses';
 }
 
-function initMap() {
+window.initMap = function() {
   gmap = new google.maps.Map(document.getElementById('gmap'), {
     center: {lat: 42.0, lng: -71.5},
     zoom: 7,
@@ -566,7 +566,7 @@ fetch(CSV_URL)
 </script>
 <script>
 var script = document.createElement('script');
-script.src = 'https://maps.googleapis.com/maps/api/js?key=AIzaSyAwCyE4PdO5GVkY9-g4SyeFmgna5KBg3To&callback=initMap&libraries=maps,marker&v=weekly';
+script.src = 'https://maps.googleapis.com/maps/api/js?key=AIzaSyAwCyE4PdO5GVkY9-g4SyeFmgna5KBg3To&callback=initMap&v=weekly';
 script.async = true;
 script.defer = true;
 document.head.appendChild(script);

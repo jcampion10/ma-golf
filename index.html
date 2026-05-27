@@ -70,7 +70,20 @@
   .map-body{display:flex;flex:1;overflow:hidden;}
   #gmap{flex:1;}
   .map-sidebar{width:340px;flex-shrink:0;overflow-y:auto;background:var(--cream);border-left:1px solid var(--border);}
-  .map-sidebar::-webkit-scrollbar{width:4px;}
+  .about-wrap{max-width:1400px;margin:0 auto;padding:3rem 2rem 5rem;}
+  .about-inner{max-width:680px;}
+  .about-flag{margin-bottom:1.5rem;}
+  .about-inner h1{font-family:'Playfair Display',serif;font-size:clamp(2rem,4vw,2.75rem);color:var(--navy);margin-bottom:0.5rem;}
+  .about-tagline{font-size:1.1rem;color:var(--muted);font-weight:300;margin-bottom:2.5rem;font-style:italic;}
+  .about-section{margin-bottom:2.5rem;}
+  .about-section h2{font-family:'Playfair Display',serif;font-size:1.25rem;color:var(--navy);margin-bottom:0.75rem;}
+  .about-section p{font-size:0.95rem;color:var(--ink);line-height:1.75;margin-bottom:0.75rem;}
+  .about-contact{background:var(--navy);border-radius:12px;padding:2rem;margin-top:3rem;}
+  .about-contact h2{font-family:'Playfair Display',serif;font-size:1.25rem;color:var(--cream);margin-bottom:0.5rem;}
+  .about-contact p{font-size:0.9rem;color:rgba(240,237,228,0.7);margin-bottom:1.25rem;}
+  .contact-btn{display:inline-block;background:var(--gold);color:var(--navy);font-weight:600;font-size:0.9rem;padding:10px 24px;border-radius:8px;text-decoration:none;transition:background 0.2s;}
+  .contact-btn:hover{background:var(--gold-light);}
+  @media(max-width:768px){.about-wrap{padding:2rem 1rem 4rem;}}
   .map-sidebar::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px;}
   @media(max-width:768px){
     .map-page{height:auto;}
@@ -116,6 +129,7 @@
     </a>
     <button class="nav-tab active" id="tab-courses" onclick="showPage('courses')">Courses</button>
     <button class="nav-tab" id="tab-map" onclick="showPage('map')">Map</button>
+    <button class="nav-tab" id="tab-about" onclick="showPage('about')">About</button>
     <div class="badge" id="headerCount">Loading...</div>
   </div>
 </header>
@@ -200,8 +214,42 @@
   </div>
 </div>
 
-<script>
-var CSV_URL = 'https://raw.githubusercontent.com/jcampion10/ma-golf/refs/heads/main/ma_golf_courses_final.csv';
+<div class="page" id="page-about">
+  <div class="about-wrap">
+    <div class="about-inner">
+      <div class="about-flag">
+        <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
+          <rect x="14" y="2" width="2" height="28" fill="#c9a84c"/>
+          <path d="M16 3 L28 9 L16 15 Z" fill="#2d6a4f"/>
+        </svg>
+      </div>
+      <h1>Massachusetts Golf</h1>
+      <p class="about-tagline">Every course in the Commonwealth, in one place.</p>
+
+      <div class="about-section">
+        <h2>Why this exists</h2>
+        <p>Finding a golf course to play in Massachusetts shouldn't be this hard. GolfNow only lists courses that pay to be on it, leaving out plenty of great public tracks. Googling "golf courses near me" buries you in private country clubs you can't get on, sponsored listings, and SEO spam. And there's no easy way to filter by what actually matters — how many holes, what region, whether you can walk up and book online.</p>
+        <p>This site is a straightforward directory of every golf course in Massachusetts — public, private, and semi-private. No paid placements, no hidden fees, no agenda. Just the courses.</p>
+      </div>
+
+      <div class="about-section">
+        <h2>How it works</h2>
+        <p>The course list is sourced from Mass Golf and maintained by hand. Golf courses don't open and close every month, so the directory stays reasonably current without constant upkeep. When you find something that looks wrong — an old website, a missing booking link, a course that's closed — get in touch and we'll fix it.</p>
+      </div>
+
+      <div class="about-section">
+        <h2>What's missing</h2>
+        <p>Some courses are still missing par, course rating, slope, and yardage — we're filling those in over time. Descriptions are sparse for now. If you have accurate information for a course you know well, send it along.</p>
+      </div>
+
+      <div class="about-contact">
+        <h2>Get in touch</h2>
+        <p>Found an error, missing course, or incomplete profile? Drop us a line.</p>
+        <a href="mailto:Email@example.com" class="contact-btn">Email@example.com</a>
+      </div>
+    </div>
+  </div>
+</div> = 'https://raw.githubusercontent.com/jcampion10/ma-golf/refs/heads/main/ma_golf_courses_final.csv';
 var REGION_CLASS = {'Berkshires':'r0','Cape Cod':'r1','Greater Boston':'r2','Greater Springfield':'r3','Greater Worcester':'r4','North Shore':'r5','South Shore':'r6'};
 var PIN_COLOR = {'public':'#2d6a4f','private':'#0a1d3f','semi-private':'#c9a84c'};
 var all = [];
@@ -305,7 +353,7 @@ function buildCard(c) {
   if (v(c.description)) h += '<div class="card-description">' + c.description + '</div>';
   h += '</div><div class="card-footer">';
   h += hasWeb ? '<a href="' + c.website_url + '" target="_blank" rel="noopener" class="btn btn-p">Website</a>' : '<span class="btn btn-d">No Website</span>';
-  h += hasBook ? '<a href="' + c.booking_url + '" target="_blank" rel="noopener" class="btn btn-s">Book Tee Time</a>' : '<span class="btn btn-d">No Booking</span>';
+  if (hasBook) h += '<a href="' + c.booking_url + '" target="_blank" rel="noopener" class="btn btn-s">Book Tee Time</a>';
   h += '</div></div>';
   return h;
 }
@@ -346,7 +394,7 @@ function render() {
 
 function initMap() {
   gmap = new google.maps.Map(document.getElementById('gmap'), {
-    center: {lat: 42.1, lng: -71.8},
+    center: {lat: 42.0, lng: -71.5},
     zoom: 7,
     mapTypeId: 'roadmap',
     styles: [
@@ -359,6 +407,17 @@ function initMap() {
   if (window._csvReady) applyMapFilters();
 }
 
+function fitMapToCourses(courses) {
+  if (!courses.length) return;
+  var bounds = new google.maps.LatLngBounds();
+  for (var i = 0; i < courses.length; i++) {
+    if (courses[i].lat && courses[i].lng) {
+      bounds.extend({lat: courses[i].lat, lng: courses[i].lng});
+    }
+  }
+  gmap.fitBounds(bounds, {top:20, right:20, bottom:20, left:20});
+}
+
 function infoContent(c) {
   var hasWeb = v(c.website_url);
   var hasBook = v(c.booking_url);
@@ -366,7 +425,7 @@ function infoContent(c) {
   h += '<div class="gm-meta">' + c.city + ', ' + c.state + ' - ' + c.holes + ' holes - ' + c.club_type + '</div>';
   h += '<div class="gm-links">';
   h += hasWeb ? '<a href="' + c.website_url + '" target="_blank" class="gml-web">Website</a>' : '<span class="gml-none">No Website</span>';
-  h += hasBook ? '<a href="' + c.booking_url + '" target="_blank" class="gml-book">Book Tee Time</a>' : '<span class="gml-none">No Booking</span>';
+  if (hasBook) h += '<a href="' + c.booking_url + '" target="_blank" class="gml-book">Book Tee Time</a>';
   h += '</div></div>';
   return h;
 }
@@ -415,7 +474,7 @@ function renderSidebar(courses) {
     html += dist;
     html += '<div class="map-card-links">';
     html += hasWeb ? '<a href="' + c.website_url + '" target="_blank" class="mcl-web" onclick="event.stopPropagation()">Website</a>' : '<span class="mcl-none">No Website</span>';
-    html += hasBook ? '<a href="' + c.booking_url + '" target="_blank" class="mcl-book" onclick="event.stopPropagation()">Book Tee Time</a>' : '<span class="mcl-none">No Booking</span>';
+    if (hasBook) html += '<a href="' + c.booking_url + '" target="_blank" class="mcl-book" onclick="event.stopPropagation()">Book Tee Time</a>';
     html += '</div></div>';
   }
   sidebar.innerHTML = html;
@@ -449,6 +508,7 @@ function applyMapFilters() {
   }
   plotMarkers(courses);
   renderSidebar(courses);
+  if (userLat === null) fitMapToCourses(courses);
 }
 
 function geocodeAndSearch() {

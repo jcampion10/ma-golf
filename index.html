@@ -216,6 +216,8 @@ function parseCSV(text) {
   var lines = text.trim().split('\n');
   var start = (lines[0].split(',')[0].trim() !== 'name') ? 1 : 0;
   var headers = lines[start].split(',').map(function(h) { return h.trim().replace(/\r/g, ''); });
+  var latI = headers.indexOf('lat');
+  var lngI = headers.indexOf('lng');
   var result = [];
   for (var i = start + 1; i < lines.length; i++) {
     var line = lines[i];
@@ -234,8 +236,23 @@ function parseCSV(text) {
       row[headers[k]] = (vals[k] || '').trim().replace(/\r/g, '');
     }
     row.holes = parseInt(row.holes) || 0;
-    row.lat = parseFloat(row.lat) || null;
-    row.lng = parseFloat(row.lng) || null;
+    // Find lat/lng by scanning all values for valid coordinates if normal parse fails
+    var lat = parseFloat(row.lat);
+    var lng = parseFloat(row.lng);
+    if (!lat || lat < 20 || lat > 50 || !lng || lng > -50) {
+      // Scan all values for valid MA lat/lng pair
+      for (var m = 0; m < vals.length - 1; m++) {
+        var mayLat = parseFloat(vals[m]);
+        var mayLng = parseFloat(vals[m+1]);
+        if (mayLat > 40 && mayLat < 44 && mayLng < -69 && mayLng > -74) {
+          lat = mayLat;
+          lng = mayLng;
+          break;
+        }
+      }
+    }
+    row.lat = (lat > 20 && lat < 50) ? lat : null;
+    row.lng = (lng < -50 && lng > -180) ? lng : null;
     if (row.name && row.name !== 'name') result.push(row);
   }
   return result;

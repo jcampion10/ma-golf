@@ -39,7 +39,7 @@
   .bp{background:rgba(45,106,79,0.3);color:#7ecf96;}.bpr{background:rgba(100,160,230,0.2);color:#a8c8f0;}.bsp{background:rgba(201,168,76,0.2);color:var(--gold-light);}
   .card-name{font-family:'Playfair Display',serif;font-size:1.05rem;color:var(--cream);line-height:1.25;margin-bottom:0.25rem;}
   .card-location{font-size:0.75rem;color:rgba(240,237,228,0.5);font-weight:300;}
-  .card-body{padding:1rem 1.25rem;flex:1;display:flex;flex-direction:column;gap:0.75rem;}
+  .card-{padding:1rem 1.25rem;flex:1;display:flex;flex-direction:column;gap:0.75rem;}
   .card-stats{display:flex;gap:0.5rem;}
   .stat{flex:1;background:#f0f4f8;border-radius:8px;padding:0.5rem 0.625rem;text-align:center;border:1px solid rgba(26,47,94,0.08);}
   .stat-val{font-family:'Playfair Display',serif;font-size:1.1rem;color:var(--navy);font-weight:700;line-height:1;}
@@ -551,13 +551,38 @@ document.getElementById('type').addEventListener('input', render);
 document.getElementById('holes').addEventListener('input', render);
 document.getElementById('sort').addEventListener('input', render);
 
-fetch(CSV_URL)
-  .then(function(res) {
-    if (!res.ok) throw new Error('HTTP ' + res.status);
-    return res.text();
+supabase
+  .from('courses')
+  .select('*')
+  .order('name')
+  .then(function(result) {
+    if (result.error) throw result.error;
+    all = result.data;
+    document.getElementById('headerCount').textContent = all.length + ' courses';
+    render();
+    window._csvReady = true;
+    if (window._mapReady) applyMapFilters();
   })
-  .then(function(text) {
-    all = parseCSV(text);
+  .catch(function(e) {
+    document.getElementById('grid').innerHTML = '<div class="empty"><div class="empty-icon">&#9971;</div><h3>Could not load courses</h3><p>' + e.message + '</p></div>';
+  });
+</script></script>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+  const SUPABASE_URL = 'https://gxqygnajdrkkalbtndts.supabase.co';
+  const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imd4cXlnbmFqZHJra2FsYnRuZHRzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzk5MTEyNjgsImV4cCI6MjA5NTQ4NzI2OH0.RRnS2jYzsj84PAtaZXHObFi3BhZw01zZVNHi8mTzrzQ';
+  const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+</script>
+
+<script>
+supabase
+  .from('courses')
+  .select('*')
+  .order('name')
+  .then(function(result) {
+    if (result.error) throw result.error;
+    all = result.data;
     document.getElementById('headerCount').textContent = all.length + ' courses';
     render();
     window._csvReady = true;
@@ -567,6 +592,7 @@ fetch(CSV_URL)
     document.getElementById('grid').innerHTML = '<div class="empty"><div class="empty-icon">&#9971;</div><h3>Could not load courses</h3><p>' + e.message + '</p></div>';
   });
 </script>
+
 <script>
 var script = document.createElement('script');
 script.src = 'https://maps.googleapis.com/maps/api/js?key=AIzaSyAwCyE4PdO5GVkY9-g4SyeFmgna5KBg3To&callback=initMap&v=weekly';
@@ -574,5 +600,6 @@ script.async = true;
 script.defer = true;
 document.head.appendChild(script);
 </script>
+
 </body>
 </html>

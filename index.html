@@ -550,38 +550,37 @@ document.getElementById('region').addEventListener('input', render);
 document.getElementById('type').addEventListener('input', render);
 document.getElementById('holes').addEventListener('input', render);
 document.getElementById('sort').addEventListener('input', render);
+</script>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
   const SUPABASE_URL = 'https://gxqygnajdrkkalbtndts.supabase.co';
   const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imd4cXlnbmFqZHJra2FsYnRuZHRzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzk5MTEyNjgsImV4cCI6MjA5NTQ4NzI2OH0.RRnS2jYzsj84PAtaZXHObFi3BhZw01zZVNHi8mTzrzQ';
   const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+  supabase
+    .from('courses')
+    .select('*')
+    .order('name')
+    .then(function(result) {
+      if (result.error) throw result.error;
+      all = result.data;
+      document.getElementById('headerCount').textContent = all.length + ' courses';
+      render();
+      window._csvReady = true;
+      if (window._mapReady) applyMapFilters();
+    })
+    .catch(function(e) {
+      document.getElementById('grid').innerHTML = '<div class="empty"><div class="empty-icon">&#9971;</div><h3>Could not load courses</h3><p>' + e.message + '</p></div>';
+    });
 </script>
 
 <script>
-supabase
-  .from('courses')
-  .select('*')
-  .order('name')
-  .then(function(result) {
-    if (result.error) throw result.error;
-    all = result.data;
-    document.getElementById('headerCount').textContent = all.length + ' courses';
-    render();
-    window._csvReady = true;
-    if (window._mapReady) applyMapFilters();
-  })
-  .catch(function(e) {
-    document.getElementById('grid').innerHTML = '<div class="empty"><div class="empty-icon">&#9971;</div><h3>Could not load courses</h3><p>' + e.message + '</p></div>';
-  });
-</script>
-
-<script>
-var script = document.createElement('script');
-script.src = 'https://maps.googleapis.com/maps/api/js?key=AIzaSyAwCyE4PdO5GVkY9-g4SyeFmgna5KBg3To&callback=initMap&v=weekly';
-script.async = true;
-script.defer = true;
-document.head.appendChild(script);
+var mapScript = document.createElement('script');
+mapScript.src = 'https://maps.googleapis.com/maps/api/js?key=AIzaSyAwCyE4PdO5GVkY9-g4SyeFmgna5KBg3To&callback=initMap&v=weekly&loading=async';
+mapScript.async = true;
+mapScript.defer = true;
+document.head.appendChild(mapScript);
 </script>
 
 </body>

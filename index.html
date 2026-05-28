@@ -139,6 +139,11 @@
   .modal-msg{font-size:0.8rem;margin-top:1rem;padding:8px 12px;border-radius:6px;display:none;}
   .modal-msg.error{display:block;background:#fdecec;color:#b3261e;}
   .modal-msg.success{display:block;background:var(--green-pale);color:var(--green);}
+  /* Favorites */
+  .fav-btn{position:absolute;top:0.875rem;right:1.25rem;background:rgba(255,255,255,0.12);border:1px solid rgba(255,255,255,0.25);border-radius:50%;width:34px;height:34px;display:flex;align-items:center;justify-content:center;cursor:pointer;z-index:2;transition:background 0.15s;}
+  .fav-btn:hover{background:rgba(255,255,255,0.25);}
+  .fav-btn svg{width:18px;height:18px;stroke:#fff;fill:none;stroke-width:2;}
+  .fav-btn.faved svg{fill:var(--gold);stroke:var(--gold);}
 </style>
 </head>
 <body>
@@ -186,6 +191,10 @@
         <option value="18">18 Holes</option>
         <option value="27">27 Holes</option>
         <option value="36">36 Holes</option>
+      </select>
+      <select id="favFilter">
+        <option value="">All Courses</option>
+        <option value="favs">My Favorites</option>
       </select>
       <div class="sort-wrap">
         <label for="sort">Sort</label>
@@ -352,8 +361,11 @@ function buildCard(c) {
   if (v(c.course_rating)) stats += '<div class="stat"><div class="stat-val">' + c.course_rating + '</div><div class="stat-label">Rating</div></div>';
   if (v(c.slope_rating)) stats += '<div class="stat"><div class="stat-val">' + c.slope_rating + '</div><div class="stat-label">Slope</div></div>';
   var addr = [c.address, c.city, c.state].filter(v).join(', ');
+  var faved = favoriteIds[c.id] ? ' faved' : '';
+  var favBtn = '<div class="fav-btn' + faved + '" onclick="toggleFavorite(' + c.id + ', this); event.stopPropagation();" title="Save to favorites"><svg viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg></div>';
   var h = '<div class="card">';
   h += '<div class="card-header ' + hc + '">';
+  h += favBtn;
   h += '<div class="card-type-badge ' + bt + '">' + c.club_type + '</div>';
   h += '<div class="card-name">' + c.name + '</div>';
   h += '<div class="card-location">' + c.city + ', ' + c.state + '</div>';
@@ -376,6 +388,7 @@ function render() {
   var type = document.getElementById('type').value;
   var holes = document.getElementById('holes').value;
   var sort = document.getElementById('sort').value;
+  var favOnly = document.getElementById('favFilter').value === 'favs';
   var filtered = [];
   for (var i = 0; i < all.length; i++) {
     var c = all[i];
@@ -383,6 +396,7 @@ function render() {
     if (region && c.region !== region) continue;
     if (type && c.club_type !== type) continue;
     if (holes && String(c.holes) !== holes) continue;
+    if (favOnly && !favoriteIds[c.id]) continue;
     filtered.push(c);
   }
   filtered.sort(function(a, b) {
@@ -558,9 +572,11 @@ document.getElementById('search').addEventListener('input', render);
 document.getElementById('region').addEventListener('input', render);
 document.getElementById('type').addEventListener('input', render);
 document.getElementById('holes').addEventListener('input', render);
+document.getElementById('favFilter').addEventListener('input', render);
 document.getElementById('sort').addEventListener('input', render);
 
 var currentUser = null;
+var favoriteIds = {};
 var authMode = 'signin';
 
 function renderAuthArea() {
@@ -658,8 +674,32 @@ sb.auth.onAuthStateChange(function(event, session) {
 sb.auth.onAuthStateChange(function(event, session) {
   currentUser = session ? session.user : null;
   renderAuthArea();
+  loadFavorites().then(function() { if (all.length) render(); });
 });
 renderAuthArea();
+
+function loadFavorites() {
+  favoriteIds = {};
+  if (!currentUser) return Promise.resolve();
+  return sb.from('favorites').select('course_id').eq('user_id', currentUser.id).then(function(res) {
+    if (!res.error && res.data) {
+      for (var i = 0; i < res.data.length; i++) favoriteIds[res.data[i].course_id] = true;
+    }
+  });
+}
+
+function toggleFavorite(courseId, el) {
+  if (!currentUser) { openAuthModal(); return; }
+  if (favoriteIds[courseId]) {
+    sb.from('favorites').delete().eq('user_id', currentUser.id).eq('course_id', courseId).then(function(res) {
+      if (!res.error) { delete favoriteIds[courseId]; if (el) el.classList.remove('faved'); if (document.getElementById('favFilter').value === 'favs') render(); }
+    });
+  } else {
+    sb.from('favorites').insert({ user_id: currentUser.id, course_id: courseId }).then(function(res) {
+      if (!res.error) { favoriteIds[courseId] = true; if (el) el.classList.add('faved'); }
+    });
+  }
+}
 
 // Load courses from Supabase
 sb.from('courses')

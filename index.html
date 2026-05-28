@@ -117,6 +117,28 @@
   .gm-info .gml-web{background:#1a2f5e;color:#f0ede4;}
   .gm-info .gml-book{background:#e8f2ec;color:#2d6a4f;border:1px solid rgba(45,106,79,0.3);}
   .gm-info .gml-none{background:#f0ede8;color:#b0ac9f;cursor:default;}
+  /* Auth UI */
+  .auth-btn{background:var(--gold);color:var(--navy);border:none;border-radius:8px;font-family:'DM Sans',sans-serif;font-size:0.8rem;font-weight:600;padding:7px 16px;cursor:pointer;}
+  .auth-btn:hover{background:var(--gold-light);}
+  .user-chip{display:flex;align-items:center;gap:10px;}
+  .user-name{color:var(--gold-light);font-size:0.8rem;font-weight:500;}
+  .logout-link{color:rgba(240,237,228,0.6);font-size:0.75rem;cursor:pointer;text-decoration:underline;background:none;border:none;font-family:'DM Sans',sans-serif;}
+  .logout-link:hover{color:var(--cream);}
+  .modal-overlay{display:none;position:fixed;inset:0;background:rgba(10,20,40,0.6);z-index:1000;align-items:center;justify-content:center;padding:1rem;}
+  .modal-overlay.open{display:flex;}
+  .modal{background:var(--white);border-radius:14px;width:100%;max-width:380px;padding:2rem;box-shadow:0 20px 60px rgba(0,0,0,0.3);}
+  .modal h2{font-family:'Playfair Display',serif;color:var(--navy);font-size:1.4rem;margin-bottom:0.25rem;}
+  .modal-sub{font-size:0.85rem;color:var(--muted);margin-bottom:1.5rem;}
+  .modal label{display:block;font-size:0.75rem;color:var(--muted);margin-bottom:4px;margin-top:0.875rem;}
+  .modal input{width:100%;padding:10px 12px;border:1px solid var(--border);border-radius:8px;font-family:'DM Sans',sans-serif;font-size:0.875rem;background:#f8f7f4;color:var(--ink);outline:none;}
+  .modal-submit{width:100%;background:var(--navy);color:var(--cream);border:none;border-radius:8px;padding:11px;font-family:'DM Sans',sans-serif;font-size:0.9rem;font-weight:600;cursor:pointer;margin-top:1.5rem;}
+  .modal-submit:hover{background:var(--blue);}
+  .modal-toggle{text-align:center;font-size:0.8rem;color:var(--muted);margin-top:1rem;}
+  .modal-toggle a{color:var(--blue);cursor:pointer;text-decoration:underline;}
+  .modal-close{float:right;font-size:1.5rem;color:var(--muted);cursor:pointer;line-height:1;background:none;border:none;}
+  .modal-msg{font-size:0.8rem;margin-top:1rem;padding:8px 12px;border-radius:6px;display:none;}
+  .modal-msg.error{display:block;background:#fdecec;color:#b3261e;}
+  .modal-msg.success{display:block;background:var(--green-pale);color:var(--green);}
 </style>
 </head>
 <body>
@@ -131,6 +153,7 @@
     <button class="nav-tab" id="tab-map" onclick="showPage('map')">Map</button>
     <button class="nav-tab" id="tab-about" onclick="showPage('about')">About</button>
     <div class="badge" id="headerCount">Loading...</div>
+    <div id="authArea"></div>
   </div>
 </header>
 
@@ -247,6 +270,31 @@
         <p>Found an error, missing course, or incomplete profile? Drop us a line.</p>
         <a href="mailto:Email@example.com" class="contact-btn">Email@example.com</a>
       </div>
+    </div>
+  </div>
+</div>
+
+<!-- Auth Modal -->
+<div class="modal-overlay" id="authModal">
+  <div class="modal">
+    <button class="modal-close" onclick="closeAuthModal()">&times;</button>
+    <h2 id="modalTitle">Sign In</h2>
+    <p class="modal-sub" id="modalSub">Welcome back to Massachusetts Golf.</p>
+    <div id="usernameField" style="display:none;">
+      <label>Username</label>
+      <input type="text" id="authUsername" placeholder="golfer123">
+    </div>
+    <label>Email</label>
+    <input type="email" id="authEmail" placeholder="you@example.com">
+    <label>Password</label>
+    <input type="password" id="authPassword" placeholder="Password">
+    <button class="modal-submit" id="modalSubmit" onclick="handleAuthSubmit()">Sign In</button>
+    <div class="modal-msg" id="modalMsg"></div>
+    <div class="modal-toggle" id="modalToggle">
+      New here? <a onclick="switchAuthMode('signup')">Create an account</a>
+    </div>
+    <div class="modal-toggle" id="forgotToggle">
+      <a onclick="sendPasswordReset()">Forgot password?</a>
     </div>
   </div>
 </div>
@@ -511,6 +559,107 @@ document.getElementById('region').addEventListener('input', render);
 document.getElementById('type').addEventListener('input', render);
 document.getElementById('holes').addEventListener('input', render);
 document.getElementById('sort').addEventListener('input', render);
+
+var currentUser = null;
+var authMode = 'signin';
+
+function renderAuthArea() {
+  var area = document.getElementById('authArea');
+  if (currentUser) {
+    var name = (currentUser.user_metadata && currentUser.user_metadata.username) || currentUser.email;
+    area.innerHTML = '<div class="user-chip"><span class="user-name">' + name + '</span><button class="logout-link" onclick="logout()">Sign out</button></div>';
+  } else {
+    area.innerHTML = '<button class="auth-btn" onclick="openAuthModal()">Sign In</button>';
+  }
+}
+
+function openAuthModal() { switchAuthMode('signin'); document.getElementById('authModal').classList.add('open'); }
+function closeAuthModal() { document.getElementById('authModal').classList.remove('open'); clearAuthMsg(); }
+
+function switchAuthMode(mode) {
+  authMode = mode;
+  var isSignup = mode === 'signup';
+  document.getElementById('modalTitle').textContent = isSignup ? 'Create Account' : 'Sign In';
+  document.getElementById('modalSub').textContent = isSignup ? 'Join the Massachusetts Golf community.' : 'Welcome back to Massachusetts Golf.';
+  document.getElementById('usernameField').style.display = isSignup ? 'block' : 'none';
+  document.getElementById('forgotToggle').style.display = isSignup ? 'none' : 'block';
+  document.getElementById('modalSubmit').textContent = isSignup ? 'Create Account' : 'Sign In';
+  document.getElementById('modalToggle').innerHTML = isSignup
+    ? 'Already have an account? <a onclick="switchAuthMode(\'signin\')">Sign in</a>'
+    : 'New here? <a onclick="switchAuthMode(\'signup\')">Create an account</a>';
+  clearAuthMsg();
+}
+
+function showAuthMsg(text, type) {
+  var m = document.getElementById('modalMsg');
+  m.textContent = text;
+  m.className = 'modal-msg ' + type;
+}
+function clearAuthMsg() {
+  var m = document.getElementById('modalMsg');
+  m.textContent = '';
+  m.className = 'modal-msg';
+}
+
+function handleAuthSubmit() {
+  var email = document.getElementById('authEmail').value.trim();
+  var password = document.getElementById('authPassword').value;
+  if (!email || !password) { showAuthMsg('Please enter email and password.', 'error'); return; }
+
+  if (authMode === 'signup') {
+    var username = document.getElementById('authUsername').value.trim();
+    if (!username) { showAuthMsg('Please choose a username.', 'error'); return; }
+    sb.auth.signUp({
+      email: email,
+      password: password,
+      options: { data: { username: username } }
+    }).then(function(res) {
+      if (res.error) { showAuthMsg(res.error.message, 'error'); return; }
+      showAuthMsg('Account created!', 'success');
+      setTimeout(closeAuthModal, 700);
+    });
+  } else {
+    sb.auth.signInWithPassword({ email: email, password: password }).then(function(res) {
+      if (res.error) { showAuthMsg(res.error.message, 'error'); return; }
+      showAuthMsg('Signed in!', 'success');
+      setTimeout(closeAuthModal, 600);
+    });
+  }
+}
+
+function logout() { sb.auth.signOut(); }
+
+function sendPasswordReset() {
+  var email = document.getElementById('authEmail').value.trim();
+  if (!email) { showAuthMsg('Enter your email above, then click Forgot password.', 'error'); return; }
+  sb.auth.resetPasswordForEmail(email, {
+    redirectTo: window.location.origin
+  }).then(function(res) {
+    if (res.error) { showAuthMsg(res.error.message, 'error'); return; }
+    showAuthMsg('Password reset link sent. Check your email.', 'success');
+  });
+}
+
+// When a user returns via the reset link, Supabase fires a PASSWORD_RECOVERY event.
+// Prompt them for a new password.
+sb.auth.onAuthStateChange(function(event, session) {
+  if (event === 'PASSWORD_RECOVERY') {
+    var newPass = window.prompt('Enter a new password (at least 6 characters):');
+    if (newPass) {
+      sb.auth.updateUser({ password: newPass }).then(function(res) {
+        if (res.error) { alert('Could not update password: ' + res.error.message); }
+        else { alert('Password updated. You are now signed in.'); }
+      });
+    }
+  }
+});
+
+// React to auth changes (login, logout, page load with saved session)
+sb.auth.onAuthStateChange(function(event, session) {
+  currentUser = session ? session.user : null;
+  renderAuthArea();
+});
+renderAuthArea();
 
 // Load courses from Supabase
 sb.from('courses')
